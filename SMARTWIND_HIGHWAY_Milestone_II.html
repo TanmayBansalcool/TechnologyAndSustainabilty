@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SMARTWIND HIGHWAY – Milestone II</title>
+<style>
+:root{--bg:#f7f9f8;--surface:#fff;--text:#1c2b26;--muted:#566a62;--accent:#0a7f5f;--line:#d5e0db;--warn:#9a6a00;--warnbg:#fff6df;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a16;--surface:#16261f;--text:#e6f1ec;--muted:#9bb3a9;--accent:#3ed3a3;--line:#2a4339;--warn:#f0c060;--warnbg:#2a2412;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1a16;--surface:#16261f;--text:#e6f1ec;--muted:#9bb3a9;--accent:#3ed3a3;--line:#2a4339;--warn:#f0c060;--warnbg:#2a2412;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--accent);color:#fff;padding:36px 20px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(1.7rem,5vw,2.6rem)}header p{margin:4px 0;opacity:.95}
+main{max-width:860px;margin:0 auto;padding:10px 20px 40px}
+h2{margin:34px 0 8px;font-size:1.4rem;border-left:5px solid var(--accent);padding-left:10px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;margin:10px 0}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.flow span{background:var(--surface);border:1px solid var(--accent);border-radius:8px;padding:7px 12px;font-size:14px}.flow i{font-style:normal}
+.todo{border:2px dashed var(--warn);background:var(--warnbg);color:var(--warn);border-radius:8px;padding:8px 12px;font-size:14px;margin:6px 0}
+.note{background:var(--surface);border-left:5px solid var(--warn);padding:10px 14px;border-radius:6px;font-size:14.5px}
+label{display:block;margin-top:10px;font-size:15px}input[type=range]{width:100%;accent-color:var(--accent)}
+.out{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:14px 0}
+.out div{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;text-align:center}.out b{display:block;font-size:1.3rem;color:var(--accent)}.out span{font-size:12.5px;color:var(--muted)}
+#status{padding:10px 14px;border-radius:8px;font-weight:600;background:#d7f5e5;color:#0b5a33}#status.bad{background:#fde0dd;color:#9b1c10}
+#bulb{display:inline-block;width:18px;height:18px;border-radius:50%;background:#ffd84a;vertical-align:middle;opacity:.15;margin-right:6px}
+button{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font:inherit;font-size:14px;margin:8px 8px 0 0}
+table{width:100%;border-collapse:collapse;font-size:14.5px}th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}th{background:var(--bg)}
+code{background:var(--bg);border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:13.5px}
+footer{text-align:center;color:var(--muted);padding:26px;font-size:14px}
+</style>
+</head>
+<body>
+<header>
+<h1>SMARTWIND HIGHWAY</h1>
+<p><b>Milestone II – Progress Report</b></p>
+<p>Team DIPOLES · Bennett University · Digital Design</p>
+</header>
+<main>
+
+<h2>1. Progress Since Milestone I</h2>
+<div class="box">Milestone I defined the idea (AI- and IoT-based wind energy harvesting from vehicle-induced airflow). Since then we have turned it into a <b>working software prototype</b>: it simulates a roadside turbine, calculates power, detects faults and shows everything on a live dashboard. Real hardware is the next stage.</div>
+<table>
+<thead><tr><th>Planned in Milestone I</th><th>Achieved by Milestone II</th></tr></thead>
+<tbody>
+<tr><td>Predict airflow and power from traffic</td><td>Working model: traffic speed and density → airflow → expected power</td></tr>
+<tr><td>Detect abnormal vibration or falling output</td><td>Rule-based fault detection with live alert (first step before ML)</td></tr>
+<tr><td>Monitor turbine and traffic data</td><td>Live dashboard with readings log and streetlight output indicator</td></tr>
+<tr><td>Sensors, turbine, AI/ML model</td><td>Designed and planned; hardware and ML are next</td></tr>
+</tbody></table>
+
+<h2>2. Project Design</h2>
+<div class="box"><div class="flow"><span>Traffic (speed + number of vehicles)</span><i>→</i><span>Airflow</span><i>→</i><span>Turbine power</span><i>→</i><span>Fault check</span><i>→</i><span>Display</span></div></div>
+<table>
+<thead><tr><th>Part</th><th>Design choice</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>Turbine</td><td>Small vertical-axis wind turbine (VAWT) beside the road, as proposed in Milestone I</td><td>Modelled in software</td></tr>
+<tr><td>Inputs / sensors</td><td>Vehicle speed, traffic density, airflow, turbine RPM, vibration, voltage, current</td><td>Speed, traffic and vibration simulated; rest planned</td></tr>
+<tr><td>Controller</td><td>Microcontroller (e.g. ESP32) to read sensors and send data</td><td>Planned</td></tr>
+<tr><td>Fault logic</td><td>Alert if vibration &gt; 0.5 or actual power &lt; half of expected</td><td>Done</td></tr>
+<tr><td>Output</td><td>Web dashboard and streetlight indicator</td><td>Done</td></tr>
+<tr><td>AI / ML</td><td>Replace fixed rules with a model that predicts power and faults</td><td>Planned</td></tr>
+</tbody></table>
+<div class="note"><b>Change from Milestone I:</b> we began with simple, explainable rules so the full pipeline works end to end; the AI/ML model will be added once we have data to train it.</div>
+
+<h2>3. Implementation and Module Demonstration</h2>
+<p>Move the sliders and see how the power changes. Tick the fault box to see the alert.</p>
+<div class="box">
+<div id="status">System working normally</div>
+<label>Vehicle speed: <b id="vS">80</b> km/h<input id="spd" type="range" min="30" max="120" value="80"></label>
+<label>Traffic: <b id="vT">50</b> vehicles/min<input id="trf" type="range" min="0" max="100" value="50"></label>
+<label><input id="flt" type="checkbox"> Simulate a turbine fault</label>
+<div class="out">
+<div><b id="oA">0</b><span>Airflow (m/s)</span></div>
+<div><b id="oE">0</b><span>Expected power (W)</span></div>
+<div><b id="oP">0</b><span>Actual power (W)</span></div>
+<div><b id="oV">0</b><span>Vibration</span></div>
+</div>
+<span id="bulb"></span>Streetlight (glows with more power)
+<h3 style="margin-bottom:6px">Last 5 readings</h3>
+<table><thead><tr><th>Time (s)</th><th>Expected (W)</th><th>Actual (W)</th><th>Vibration</th><th>Status</th></tr></thead><tbody id="log"></tbody></table>
+</div>
+<div class="note"><b>How it works (simple formulas):</b><br>
+Airflow = speed × traffic ÷ 1000<br>
+Expected power = 0.5 × airflow × airflow<br>
+Actual power = expected power ± small random change (noise)<br>
+Alert if vibration is above 0.5 <b>or</b> actual power is less than half of expected power.</div>
+<p class="note" style="margin-top:12px"><b>Note:</b> these formulas are simplified placeholders and the numbers are simulated, not measured from a real turbine. They will be replaced with real sensor data and calibrated values. The prototype code was written with AI assistance (Claude).</p>
+
+<h2>4. Module Progress</h2>
+<table>
+<thead><tr><th>Module</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>Traffic and airflow simulation</td><td>Done (software)</td></tr>
+<tr><td>Power calculation</td><td>Done (software)</td></tr>
+<tr><td>Fault detection and alert</td><td>Done (software, rule-based)</td></tr>
+<tr><td>Display / dashboard</td><td>Done (this page)</td></tr>
+<tr><td>Real turbine and sensors</td><td>Planned</td></tr>
+<tr><td>AI / ML model</td><td>Planned (next milestone)</td></tr>
+</tbody></table>
+
+<h2>5. Video, Files and Documents</h2>
+<div class="todo"><a href="https://www.youtube.com/watch?v=WjOG6QPWiB0&list=RDWjOG6QPWiB0&start_radio=1">Video link</a></div>
+<div class="todo">Add link: project files (code / Drive folder), set to "anyone with the link can view".</div>
+<div class="todo">Add link: supporting documents (Milestone I SDG canvas, screenshots).</div>
+
+<h2>6. Team</h2>
+<table>
+<thead><tr><th>Member</th><th>ID</th><th>Contribution</th></tr></thead>
+<tbody>
+<tr><td>Tanmay Bansal</td><td>S26CSEU3550</td><td>Project lead</td></tr>
+<tr><td>Naitik Kushwha</td><td>S26CSEU3546</td><td>Frontend and backend</td></tr>
+<tr><td>Daksh Kumar</td><td>S26CSEU3499</td><td>Tech head</td></tr>
+<tr><td>Atharv Nishad</td><td>S26CSEU3440</td><td>Project idea and research</td></tr>
+<tr><td>Neeraj Sharma</td><td>S26CSEU3558</td><td>Supports all modules</td></tr>
+</tbody></table>
+
+<h2>7. Next Steps</h2>
+<div class="box">
+<ol style="margin:0;padding-left:20px">
+<li>Build a small model turbine and test it with a fan or passing-air source.</li>
+<li>Read real sensor data (RPM, vibration, voltage, current) with a microcontroller.</li>
+<li>Log the data and use it to train a simple ML model for power prediction and fault detection.</li>
+<li>Replace the placeholder formulas with calibrated ones.</li>
+</ol></div>
+</main>
+<footer>SMARTWIND HIGHWAY · Milestone II · Team DIPOLES</footer>
+
+<script>
+// Read the controls from the page
+var spd = document.getElementById("spd");
+var trf = document.getElementById("trf");
+var flt = document.getElementById("flt");
+var seconds = 0;
+var rows = [];
+
+// Show the slider values next to the sliders
+spd.oninput = function () { document.getElementById("vS").textContent = spd.value; };
+trf.oninput = function () { document.getElementById("vT").textContent = trf.value; };
+
+function update() {
+  seconds = seconds + 1;
+  var speed = Number(spd.value);
+  var traffic = Number(trf.value);
+
+  // 1. Airflow and expected power (simple formulas)
+  var airflow = speed * traffic / 1000;
+  var expected = 0.5 * airflow * airflow;
+
+  // 2. Actual power = expected power + small random noise (-10% to +10%)
+  var noise = 1 + (Math.random() - 0.5) * 0.2;
+  var actual = expected * noise;
+
+  // 3. Vibration is small normally, high when there is a fault
+  var vibration = 0.1 + 0.02 * airflow + Math.random() * 0.05;
+  if (flt.checked) {
+    actual = actual * 0.3;
+    vibration = vibration + 0.6;
+  }
+
+  // 4. Fault check (if-else rule)
+  var bad = false;
+  if (vibration > 0.5 || (expected > 1 && actual < expected / 2)) {
+    bad = true;
+  }
+
+  // 5. Show everything on the page
+  document.getElementById("oA").textContent = airflow.toFixed(1);
+  document.getElementById("oE").textContent = expected.toFixed(1);
+  document.getElementById("oP").textContent = actual.toFixed(1);
+  document.getElementById("oV").textContent = vibration.toFixed(2);
+  document.getElementById("bulb").style.opacity = Math.min(1, 0.15 + actual / 10);
+
+  var st = document.getElementById("status");
+  if (bad) {
+    st.className = "bad";
+    st.textContent = "ALERT: possible fault. Maintenance needed.";
+  } else {
+    st.className = "";
+    st.textContent = "System working normally";
+  }
+
+  // 6. Keep the last 5 readings in the table
+  rows.unshift("<tr><td>" + seconds + "</td><td>" + expected.toFixed(1) + "</td><td>" + actual.toFixed(1) + "</td><td>" + vibration.toFixed(2) + "</td><td>" + (bad ? "ALERT" : "OK") + "</td></tr>");
+  if (rows.length > 5) { rows.pop(); }
+  document.getElementById("log").innerHTML = rows.join("");
+}
+
+update();
+setInterval(update, 1000);
+</script>
+</body>
+</html>
